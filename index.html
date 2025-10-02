@@ -73,18 +73,22 @@
   <script>
     // 🔹 Replace this with your Firebase project config (from Firebase Console → Project Settings → Your Apps → Web App)
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyB6uZz4m-9bMyx-YuKPo4fM5P-QJrrs2wo",
+      authDomain: "batik-air-inventory.firebaseapp.com",
+      databaseURL: "https://batik-air-inventory-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "batik-air-inventory",
+      storageBucket: "batik-air-inventory.firebasestorage.app",
+      messagingSenderId: "936292420275",
+      appId: "1:936292420275:web:557acc2bc2a5e6a6a0bec6",
+      measurementId: "G-7DMFHTFXMC"
     };
 
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
     const form = document.getElementById('addForm');
     const tableBody = document.querySelector('#inventoryTable tbody');
@@ -166,3 +170,4 @@
   </script>
 </body>
 </html>
+
