@@ -25,7 +25,7 @@
 </head>
 <body>
 
-  <h1>Batik Air Inventory Tracker (Cloud)</h1>
+  <h1>Batik Air Inventory Tracker</h1>
   <div class="container">
 
     <!-- Upload / Add Item -->
@@ -50,19 +50,92 @@
 
     <!-- Results -->
     <table id="inventoryTable">
-      <thead>
-        <tr>
-          <th>PN</th>
-          <th>SN</th>
-          <th>Batch</th>
-          <th>Bin</th>
-          <th>PN Description</th>
-          <th>Location</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+        </div>
+
+        <script>
+          let items = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+
+          const form = document.getElementById('addForm');
+          const tableBody = document.querySelector('#inventoryTable tbody');
+          const backBtn = document.getElementById('backBtn');
+
+          // Render full inventory
+          function renderTable(visibleItems = items) {
+            tableBody.innerHTML = '';
+            visibleItems.forEach((item, index) => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${item.pn}</td>
+                <td>${item.sn}</td>
+                <td>${item.batch}</td>
+                <td>${item.bin}</td>
+                <td>${item.pnDesc}</td>
+                <td>${item.location}</td>
+                <td><button onclick="deleteItem(${index})">Delete</button></td>
+              `;
+              tableBody.appendChild(row);
+            });
+          }
+
+          // Add item
+          form.addEventListener('submit', e => {
+            e.preventDefault();
+            const newItem = {
+              pn: document.getElementById('pn').value.trim(),
+              sn: document.getElementById('sn').value.trim(),
+              batch: document.getElementById('batch').value.trim(),
+              bin: document.getElementById('bin').value.trim(),
+              pnDesc: document.getElementById('pnDesc').value.trim(),
+              location: document.getElementById('location').value.trim()
+            };
+            items.push(newItem);
+            localStorage.setItem('inventoryItems', JSON.stringify(items));
+            renderTable();
+            form.reset();
+          });
+
+          // Delete item with confirmation
+          function deleteItem(index) {
+            if (confirm("Are you sure you want to delete this item?")) {
+              items.splice(index, 1);
+              localStorage.setItem('inventoryItems', JSON.stringify(items));
+              renderTable();
+            }
+          }
+
+          // Search function
+          function searchItem() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!query) {
+            renderTable();
+        return;
+      }
+        const results = items.filter(item =>
+          item.pn.toLowerCase() === query ||
+          item.sn.toLowerCase() === query ||
+          item.batch.toLowerCase() === query ||
+          item.bin.toLowerCase() === query
+        );
+        if (results.length > 0) {
+          renderTable(results);
+          backBtn.style.display = 'inline-block';
+        } else {
+          alert("Item not found!");
+        }
+      }  
+
+    // Show all items again
+    function showAll() {
+      renderTable();
+      document.getElementById('searchInput').value = '';
+      backBtn.style.display = 'none';
+    }
+    
+    // Initial render
+    renderTable();
+  </script>
+
+
 
   </div>
 
@@ -167,3 +240,4 @@
   </script>
 </body>
 </html>
+
