@@ -66,12 +66,12 @@
 
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+  <!-- Firebase SDKs (v8 so we can use firebase.initializeApp) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
   <script>
-    // 🔹 Your Firebase config
+    // 🔹 Your Firebase config (from Firebase Console)
     const firebaseConfig = {
       apiKey: "AIzaSyB6uZz4m-9bMyx-YuKPo4fM5P-QJrrs2wo",
       authDomain: "batik-air-inventory.firebaseapp.com",
@@ -84,7 +84,7 @@
     };
 
     // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
     const form = document.getElementById('addForm');
@@ -92,7 +92,7 @@
     const backBtn = document.getElementById('backBtn');
     let allItems = {};
 
-    // Render items in the table
+    // Render table
     function renderTable(items) {
       tableBody.innerHTML = '';
       for (const id in items) {
@@ -133,7 +133,7 @@
       }
     }
 
-    // Search items
+    // Search
     function searchItem() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
       if (!query) { renderTable(allItems); return; }
@@ -159,7 +159,7 @@
       backBtn.style.display = 'none';
     }
 
-    // Sync with Firebase
+    // Live sync with Firebase
     db.ref('inventory').on('value', snapshot => {
       allItems = snapshot.val() || {};
       renderTable(allItems);
